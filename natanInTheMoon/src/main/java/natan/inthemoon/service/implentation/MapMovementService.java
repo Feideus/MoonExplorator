@@ -51,7 +51,11 @@ public class MapMovementService implements AbstractMapMovementService {
         }
         PointDescription target = resolveTarget(moonMap, commands);
         List<PointDescription> aStarMoveList = AstarUtils.aStarShortestRoute(moonMap, currentPosition, target);
+
         commandHistoryService.historizeMoveList(aStarMoveList, moonMap.getDimension());
+
+        MoonMapUtils.resetMoonMapHeuristics(moonMap);
+
         return aStarMoveList.size();
     }
 
@@ -86,16 +90,16 @@ public class MapMovementService implements AbstractMapMovementService {
         for (String command : commands) {
             switch (Command.valueOf(command)) {
                 case N:
-                    nextY = abs((nextY + 1) % moonMap.getDimension());
+                    nextX = (nextX - 1 + moonMap.getDimension()) % moonMap.getDimension();
                     break;
                 case S:
-                    nextY = abs((nextY - 1) % moonMap.getDimension());
+                    nextX = (nextX + 1 ) % moonMap.getDimension();
                     break;
                 case E:
-                    nextY = abs((nextX + 1) % moonMap.getDimension());
+                    nextY = (nextY - 1 + moonMap.getDimension()) % moonMap.getDimension();
                     break;
                 case W:
-                    nextY = abs((nextX - 1) % moonMap.getDimension());
+                    nextY = (nextY + 1 ) % moonMap.getDimension();
                     break;
                 default:
                     throw new Exception("Bad command");
