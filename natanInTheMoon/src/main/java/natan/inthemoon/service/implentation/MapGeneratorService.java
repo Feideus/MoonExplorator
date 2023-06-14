@@ -33,7 +33,6 @@ public class MapGeneratorService implements AbstractMapGeneratorService {
                 .pointList(generatePointList())
                 .build();
 
-        this.drawMapRepresentation(moonMap);
         return moonMap;
     }
 
@@ -72,14 +71,4 @@ public class MapGeneratorService implements AbstractMapGeneratorService {
                 .count() >= floor(sqrt(this.mapDimension));
     }
 
-    private void drawMapRepresentation(MoonMap moonMap) {
-        StringBuilder strBuilder = new StringBuilder();
-        for (PointDescription pointDescription : moonMap.getPointList()) {
-            if (pointDescription.getX() % this.mapDimension == 0) {
-                strBuilder.append(System.getProperty("line.separator"));
-            }
-            strBuilder.append(pointDescription.isObstacle() ? "O" : ".");
-        }
-        System.out.println(strBuilder);
-    }
 }
