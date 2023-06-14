@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import static java.lang.Math.sqrt;
+import static java.lang.Math.*;
 
 @Service
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
@@ -69,7 +69,7 @@ public class MapGeneratorService implements AbstractMapGeneratorService {
                 .stream()
                 .filter(pointDescription -> pointDescription.getY() == lignIndex)
                 .filter(PointDescription::isObstacle)
-                .count() > sqrt(this.mapDimension);
+                .count() >= floor(sqrt(this.mapDimension));
     }
 
     private void drawMapRepresentation(MoonMap moonMap) {

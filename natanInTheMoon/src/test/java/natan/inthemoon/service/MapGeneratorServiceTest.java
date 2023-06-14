@@ -12,8 +12,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import static java.lang.Math.pow;
-import static java.lang.Math.sqrt;
+import static java.lang.Math.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.InstanceOfAssertFactories.map;
 import static org.junit.jupiter.api.Assertions.*;
@@ -69,7 +68,7 @@ public class MapGeneratorServiceTest {
                 .anyMatch(pointDescriptionList -> pointDescriptionList
                         .stream()
                         .filter(PointDescription::isObstacle)
-                        .count() <= sqrt(mapDimension)));
+                        .count() <= floor(sqrt(mapDimension))));
     }
 
     @Test
