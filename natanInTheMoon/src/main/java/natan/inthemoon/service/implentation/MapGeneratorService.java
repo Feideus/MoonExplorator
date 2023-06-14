@@ -64,7 +64,7 @@ public class MapGeneratorService implements AbstractMapGeneratorService {
         return new Random().nextDouble() <= 1 / sqrt(this.mapDimension);
     }
 
-    private boolean verifyMaxObstacles(final List<PointDescription> pointDescriptionList, final int lignIndex) {
+    public boolean verifyMaxObstacles(final List<PointDescription> pointDescriptionList, final int lignIndex) {
         return pointDescriptionList
                 .stream()
                 .filter(pointDescription -> pointDescription.getY() == lignIndex)

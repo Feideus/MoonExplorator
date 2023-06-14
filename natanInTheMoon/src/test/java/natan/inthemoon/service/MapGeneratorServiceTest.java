@@ -8,6 +8,9 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -16,6 +19,9 @@ import static java.lang.Math.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.InstanceOfAssertFactories.map;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 @SpringBootTest
 public class MapGeneratorServiceTest {
@@ -72,7 +78,40 @@ public class MapGeneratorServiceTest {
     }
 
     @Test
-    void MapShouldHaveNoMoreThanSquareObstaclesFailTest() {
-        fail("Not yet Implemented");
+    void verifyMaxObstaclesForLignIndexFailTest() throws Exception {
+        // GIVEN
+        List<PointDescription> pointList = new ArrayList<>();
+        pointList.add(PointDescription.builder().x(0).y(0).obstacle(true).build());
+        pointList.add(PointDescription.builder().x(1).y(0).obstacle(true).build());
+        pointList.add(PointDescription.builder().x(2).y(0).obstacle(true).build());
+        pointList.add(PointDescription.builder().x(3).y(0).obstacle(true).build());
+        pointList.add(PointDescription.builder().x(4).y(0).obstacle(false).build());
+
+        // WHEN
+        // sqrt(5) = 2. So this pointList exceeds max obstacles by 2.
+        this.mapGeneratorService.generateMap(5);
+        boolean result = this.mapGeneratorService.verifyMaxObstacles(pointList, 0);
+
+        // THEN
+        assertTrue(result);
+    }
+
+    @Test
+    void verifyMaxObstaclesForLignIndexValidTest() throws Exception {
+        // GIVEN
+        List<PointDescription> pointList = new ArrayList<>();
+        pointList.add(PointDescription.builder().x(0).y(0).obstacle(true).build());
+        pointList.add(PointDescription.builder().x(1).y(0).obstacle(false).build());
+        pointList.add(PointDescription.builder().x(2).y(0).obstacle(false).build());
+        pointList.add(PointDescription.builder().x(3).y(0).obstacle(false).build());
+        pointList.add(PointDescription.builder().x(4).y(0).obstacle(false).build());
+
+        // WHEN
+        // sqrt(5) = 2. So this pointList doesnt exceed max obstacles
+        this.mapGeneratorService.generateMap(5);
+        boolean result = this.mapGeneratorService.verifyMaxObstacles(pointList, 0);
+
+        // THEN
+        assertFalse(result);
     }
 }
