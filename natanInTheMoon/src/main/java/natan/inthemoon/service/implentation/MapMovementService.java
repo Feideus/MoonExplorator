@@ -6,8 +6,15 @@ import natan.inthemoon.pojos.PointDescription;
 import natan.inthemoon.service.abstraction.AbstractCommandHistoryService;
 import natan.inthemoon.service.abstraction.AbstractMapGeneratorService;
 import natan.inthemoon.service.abstraction.AbstractMapMovementService;
+import natan.inthemoon.service.utils.AstarUtils;
+import natan.inthemoon.service.utils.MoonMapUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+import static java.lang.Math.abs;
+
 
 @Service
 public class MapMovementService implements AbstractMapMovementService {
@@ -15,6 +22,7 @@ public class MapMovementService implements AbstractMapMovementService {
     private final AbstractMapGeneratorService mapGeneratorService;
     private final AbstractCommandHistoryService commandHistoryService;
     private MoonMap moonMap;
+    private PointDescription currentPosition;
 
     @Autowired
     public MapMovementService(AbstractMapGeneratorService mapGeneratorService, AbstractCommandHistoryService commandHistoryService) {
@@ -22,8 +30,9 @@ public class MapMovementService implements AbstractMapMovementService {
         this.commandHistoryService = commandHistoryService;
     }
 
-    public void initializeMap(final int mapDimension) throws Exception {
-        this.moonMap = this.mapGeneratorService.generateMap(mapDimension);
+    public void initializeMap(final int mapDimension, PointDescription pointDescription) throws Exception {
+        this.moonMap = mapGeneratorService.generateMap(mapDimension);
+        this.currentPosition = pointDescription;
     }
 
     public int executeCommands(final String commands) throws Exception {
@@ -33,17 +42,17 @@ public class MapMovementService implements AbstractMapMovementService {
 
         String[] parsedCommands = commands.split(",");
         verifyCommands(parsedCommands);
-
-        for (String command : parsedCommands) {
-            executeMovement(command);
-            this.commandHistoryService.historizeCommand(command);
-        }
-
-        return parsedCommands.length;
+        return executeMovements(parsedCommands);
     }
 
-    private void executeMovement(final String command) {
-        // Not yet Implemented
+    private int executeMovements(final String[] commands) throws Exception {
+        if (commands == null || commands.length == 0) {
+            throw new Exception("Bad commands");
+        }
+        PointDescription target = resolveTarget(moonMap, commands);
+        List<PointDescription> aStarMoveList = AstarUtils.aStarShortestRoute(moonMap, currentPosition, target);
+        commandHistoryService.historizeMoveList(aStarMoveList, moonMap.getDimension());
+        return aStarMoveList.size();
     }
 
     private void verifyCommands(final String[] parsedCommands) throws Exception {
@@ -62,12 +71,36 @@ public class MapMovementService implements AbstractMapMovementService {
 
     public String drawMapRepresentation() {
         StringBuilder strBuilder = new StringBuilder();
-        for (PointDescription pointDescription : this.moonMap.getPointList()) {
-            if (pointDescription.getX() % this.moonMap.getDimension() == 0) {
+        for (PointDescription pointDescription : moonMap.getPointList()) {
+            if (pointDescription.getX() % moonMap.getDimension() == 0) {
                 strBuilder.append(System.getProperty("line.separator"));
             }
             strBuilder.append(pointDescription.isObstacle() ? "O" : ".");
         }
         return strBuilder.toString();
+    }
+
+    private PointDescription resolveTarget(final MoonMap moonMap, final String[] commands) throws Exception {
+        int nextX = currentPosition.getX();
+        int nextY = currentPosition.getY();
+        for (String command : commands) {
+            switch (Command.valueOf(command)) {
+                case N:
+                    nextY = abs((nextY + 1) % moonMap.getDimension());
+                    break;
+                case S:
+                    nextY = abs((nextY - 1) % moonMap.getDimension());
+                    break;
+                case E:
+                    nextY = abs((nextX + 1) % moonMap.getDimension());
+                    break;
+                case W:
+                    nextY = abs((nextX - 1) % moonMap.getDimension());
+                    break;
+                default:
+                    throw new Exception("Bad command");
+            }
+        }
+        return MoonMapUtils.getPointDescriptionInMap(moonMap, nextX, nextY);
     }
 }

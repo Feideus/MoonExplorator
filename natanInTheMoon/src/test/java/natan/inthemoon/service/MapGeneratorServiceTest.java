@@ -81,11 +81,11 @@ public class MapGeneratorServiceTest {
     void verifyMaxObstaclesForLignIndexFailTest() throws Exception {
         // GIVEN
         List<PointDescription> pointList = new ArrayList<>();
-        pointList.add(PointDescription.builder().x(0).y(0).obstacle(true).build());
-        pointList.add(PointDescription.builder().x(1).y(0).obstacle(true).build());
-        pointList.add(PointDescription.builder().x(2).y(0).obstacle(true).build());
-        pointList.add(PointDescription.builder().x(3).y(0).obstacle(true).build());
-        pointList.add(PointDescription.builder().x(4).y(0).obstacle(false).build());
+        pointList.add(PointDescription.builder().x(0).y(0).obstacle(true).heuristic(0.0).build());
+        pointList.add(PointDescription.builder().x(1).y(0).obstacle(true).heuristic(0.0).build());
+        pointList.add(PointDescription.builder().x(2).y(0).obstacle(true).heuristic(0.0).build());
+        pointList.add(PointDescription.builder().x(3).y(0).obstacle(true).heuristic(0.0).build());
+        pointList.add(PointDescription.builder().x(4).y(0).obstacle(false).heuristic(0.0).build());
 
         // WHEN
         // sqrt(5) = 2. So this pointList exceeds max obstacles by 2.
@@ -100,11 +100,11 @@ public class MapGeneratorServiceTest {
     void verifyMaxObstaclesForLignIndexValidTest() throws Exception {
         // GIVEN
         List<PointDescription> pointList = new ArrayList<>();
-        pointList.add(PointDescription.builder().x(0).y(0).obstacle(true).build());
-        pointList.add(PointDescription.builder().x(1).y(0).obstacle(false).build());
-        pointList.add(PointDescription.builder().x(2).y(0).obstacle(false).build());
-        pointList.add(PointDescription.builder().x(3).y(0).obstacle(false).build());
-        pointList.add(PointDescription.builder().x(4).y(0).obstacle(false).build());
+        pointList.add(PointDescription.builder().x(0).y(0).obstacle(true).heuristic(0.0).build());
+        pointList.add(PointDescription.builder().x(1).y(0).obstacle(false).heuristic(0.0).build());
+        pointList.add(PointDescription.builder().x(2).y(0).obstacle(false).heuristic(0.0).build());
+        pointList.add(PointDescription.builder().x(3).y(0).obstacle(false).heuristic(0.0).build());
+        pointList.add(PointDescription.builder().x(4).y(0).obstacle(false).heuristic(0.0).build());
 
         // WHEN
         // sqrt(5) = 2. So this pointList doesnt exceed max obstacles

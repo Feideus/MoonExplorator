@@ -1,14 +1,15 @@
 package natan.inthemoon.controller;
 
 import lombok.AllArgsConstructor;
+import natan.inthemoon.enums.Command;
 import natan.inthemoon.service.abstraction.AbstractCommandHistoryService;
-import natan.inthemoon.service.abstraction.AbstractMapGeneratorService;
 import natan.inthemoon.service.abstraction.AbstractMapMovementService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @RestController
@@ -30,7 +31,10 @@ class MoonExploratorController {
 
     @GetMapping("/history")
     public List<String> commandsHistory() {
-        return commandHistoryService.getCommandsHistory();
+        return commandHistoryService.getCommandsHistory()
+                .stream()
+                .map(Command::getLabel)
+                .collect(Collectors.toList());
     }
 
     @GetMapping("/map")
