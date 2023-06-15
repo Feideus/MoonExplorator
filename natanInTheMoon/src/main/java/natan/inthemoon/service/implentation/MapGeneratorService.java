@@ -1,11 +1,14 @@
 package natan.inthemoon.service.implentation;
 
 import lombok.RequiredArgsConstructor;
+import natan.inthemoon.enums.ExceptionLabel;
+import natan.inthemoon.exception.NatanInTheMoonException;
 import natan.inthemoon.pojos.MoonMap;
 import natan.inthemoon.pojos.PointDescription;
 import natan.inthemoon.pojos.WeightedPointDescription;
 import natan.inthemoon.service.abstraction.AbstractMapGeneratorService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -27,11 +30,11 @@ public class MapGeneratorService implements AbstractMapGeneratorService {
      *
      * @param mapDimension length of the side of the map
      * @return
-     * @throws Exception
      */
-    public MoonMap generateMap(final int mapDimension) throws Exception {
+    public MoonMap generateMap(final int mapDimension) {
         if (mapDimension <= 0) {
-            throw new Exception("Map dimension cannot be <= 0");
+            throw new NatanInTheMoonException(HttpStatus.INTERNAL_SERVER_ERROR,
+                    ExceptionLabel.NEGATIVE_OR_NULL_MAP_DIMENSION);
         }
 
         this.mapDimension = mapDimension;

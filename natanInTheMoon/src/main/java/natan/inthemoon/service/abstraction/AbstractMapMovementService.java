@@ -11,9 +11,9 @@ import natan.inthemoon.pojos.WeightedPointDescription;
 
 public interface AbstractMapMovementService {
 
-    void initializeMap(final int mapDimension, WeightedPointDescription pointDescription) throws Exception;
+    void initializeMap(final int mapDimension, WeightedPointDescription pointDescription);
 
-    int executeCommands(final String commands) throws Exception;
+    int executeCommands(final String commands);
 
     String drawMapRepresentation();
 

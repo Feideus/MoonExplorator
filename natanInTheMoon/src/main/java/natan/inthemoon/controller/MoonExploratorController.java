@@ -2,7 +2,7 @@ package natan.inthemoon.controller;
 
 import lombok.AllArgsConstructor;
 import natan.inthemoon.enums.Command;
-import natan.inthemoon.pojos.PointDescription;
+import natan.inthemoon.exception.NatanInTheMoonException;
 import natan.inthemoon.service.abstraction.AbstractCommandHistoryService;
 import natan.inthemoon.service.abstraction.AbstractMapMovementService;
 import org.springframework.http.HttpStatus;
@@ -13,10 +13,10 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
-* Controller handling moon exploration and map control
-*
-* @author Erwan Ulrich
-* */
+ * Controller handling moon exploration and map control
+ *
+ * @author Erwan Ulrich
+ */
 
 @RestController
 @RequestMapping("/api/natan-in-the-moon")
@@ -30,6 +30,8 @@ class MoonExploratorController {
     public int performMovement(@RequestParam("commands") String commands) {
         try {
             return mapMovementService.executeCommands(commands.trim());
+        } catch (NatanInTheMoonException nitme) {
+            throw new ResponseStatusException(nitme.getHttpStatus(), nitme.getCustomLabel().getLabel(), nitme);
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, e.getMessage(), e);
         }
