@@ -14,7 +14,7 @@ public class FileSystemExploratorService implements AbstractFileSystemExplorator
     private final AbstractInputManagerService inputManagementService;
 
     @Override
-    public int exploreFileSystemDepth(String inputAsString) {
+    public int exploreFileSystemDepth(String inputAsString) throws Exception {
         inputManagementService.validateInput(inputAsString);
         List<String> inputs = inputManagementService.parseInput(inputAsString);
         return computeDepth(inputs);
