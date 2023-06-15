@@ -2,6 +2,7 @@ package natan.inthemoon.controller;
 
 import lombok.AllArgsConstructor;
 import natan.inthemoon.enums.Command;
+import natan.inthemoon.pojos.PointDescription;
 import natan.inthemoon.service.abstraction.AbstractCommandHistoryService;
 import natan.inthemoon.service.abstraction.AbstractMapMovementService;
 import org.springframework.http.HttpStatus;
@@ -11,6 +12,11 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+* Controller handling moon exploration and map control
+*
+* @author Erwan Ulrich
+* */
 
 @RestController
 @RequestMapping("/api/natan-in-the-moon")

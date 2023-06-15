@@ -1,13 +1,16 @@
 package natan.inthemoon;
 
-import lombok.AllArgsConstructor;
-import natan.inthemoon.pojos.PointDescription;
+import natan.inthemoon.pojos.WeightedPointDescription;
 import natan.inthemoon.service.abstraction.AbstractMapMovementService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
+
+/**
+ * @Author Erwan Ulrich
+ */
 
 @Component
 public class MoonExploratorRunner implements ApplicationRunner {
@@ -24,13 +27,7 @@ public class MoonExploratorRunner implements ApplicationRunner {
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
-        PointDescription startPosition = PointDescription
-                .builder()
-                .heuristic(0)
-                .x(0)
-                .y(0)
-                .obstacle(false)
-                .build();
+        WeightedPointDescription startPosition = new WeightedPointDescription(0, 0, false, 0, 0, null);
         this.mapMovementService.initializeMap(mapDimension, startPosition);
     }
 }
