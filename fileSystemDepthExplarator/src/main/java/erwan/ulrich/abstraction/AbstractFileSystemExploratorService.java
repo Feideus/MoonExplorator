@@ -3,6 +3,7 @@ package erwan.ulrich.abstraction;
 import java.util.List;
 
 public interface AbstractFileSystemExploratorService {
+    int computeDepth(List<String> parsedInput);
 
-    List<String> parseInput(final String inputAsString);
+    int exploreFileSystemDepth(final String inputAsString);
 }
