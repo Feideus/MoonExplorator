@@ -1,10 +1,12 @@
 package erwan.ulrich.abstraction;
 
+import erwan.ulrich.pojos.Node;
+
 import java.util.List;
 
 public interface AbstractInputManagerService {
 
-    List<String> parseInput(String inputAsString) throws Exception;
+    List<Node> parseInput(String inputAsString) throws Exception;
 
     void validateInput(final String inputAsString) throws Exception;
 }

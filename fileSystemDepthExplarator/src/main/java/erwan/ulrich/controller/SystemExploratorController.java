@@ -13,8 +13,13 @@ public class SystemExploratorController {
 
     private final AbstractFileSystemExploratorService fileSystemExploratorService;
 
-    @PostMapping("/exploreFileSystemDepth")
+    @PostMapping("/explore-file-system-depth")
     public int exploreFileSystemDepth(@RequestParam(value = "inputAsString") String fileSystemAsString) throws Exception {
         return this.fileSystemExploratorService.exploreFileSystemDepth(fileSystemAsString);
+    }
+
+    @PostMapping("/draw-file-system-representation")
+    public String drawPonderedTree(@RequestParam(value = "inputAsString") String fileSystemAsString) throws Exception {
+        return this.fileSystemExploratorService.drawPonderedTree(fileSystemAsString);
     }
 }
